@@ -25,9 +25,9 @@ export default {
   },
   methods: {
     async run (stepUpdate) {
-      console.log(genAddress(2))
+      // console.log(genAddress(2))
       const test = await stuff()
-      console.log(test.script)
+      console.log(test)
     }
   }
 }

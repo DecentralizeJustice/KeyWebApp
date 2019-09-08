@@ -8,24 +8,30 @@ const testnet = NETWORKS.testnet
 
 let stuff = async function () {
   const network = testnet
+  const m = 2
+  // const n = 4
   const eccArray = getECPairFromWifArray(wifList.wifList, network)
-  const p2sh = createPayment('p2sh-p2wsh-p2ms(2 of 2)', eccArray, network)
-  // const transInfo = await genAddressUnspent.genAddressUnspent('2MyG6iPpbbH5G7Fh7kcQpevLte3jhSy5Yke')
-  const inputData = await getInputData(p2sh.payment, 'p2sh-p2wsh')
-  const spendable = 10000
-  const fees = spendable - 5000
+  const p2sh = createPayment('p2sh-p2wsh-p2ms(2 of 3)', eccArray, network)
+  const transInfo = await genAddressUnspent.genAddressUnspent('2N32ArACYusEbgjZ4ox1jRGCxwygA8rPtgT')
+  const inputData = await getInputData(p2sh.payment, 'p2sh-p2wsh', transInfo)
+  const spendable = transInfo.value_int
+  const fees = 10000
   const totalToSend = spendable - fees
-  const psbt = new bitcoin.Psbt({ network: network })
+  let psbt = new bitcoin.Psbt({ network: network })
     .addInput(inputData)
     .addOutput({
-      address: '2NGZrVvZG92qGYqzTLjCAewvPZ7JE8S8VxE',
+      address: 'mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt',
       value: totalToSend
     })
-    .signInput(0, p2sh.keys[0])
-    .signInput(0, p2sh.keys[1])
+  for (let i = 0; i < m; i++) {
+    psbt.signInput(0, p2sh.keys[i])
+  }
+  psbt.validateSignaturesOfInput(0)
   psbt.finalizeAllInputs()
   const tx = psbt.extractTransaction()
-  return tx
+  const txHex = tx.toHex()
+  const broadcast = await genAddressUnspent.broadcastTrans(txHex)
+  return broadcast
 }
 
 function getECPairFromWifArray (wifArray, network) {
@@ -80,12 +86,12 @@ function createPayment (_type, myKeys, network) {
     keys
   }
 }
-async function getInputData (payment, redeemType) {
-  const amount = 10000
-  const hash = '9c72e8d196e13f643331e4d26c942640655128c1773a5f6c56cb70efb43f0628'
-  const index = 1
+function getInputData (payment, redeemType, transInfo) {
+  const amount = transInfo.value_int
+  const hash = transInfo.txid
+  const index = transInfo.n
   const script = Buffer.from(
-    'a91441fb19425667dba47df50802d046f35520732c5487', 'hex'
+    transInfo.script_pub_key.hex, 'hex'
   )
   const witnessUtxo = {
     script: script,
@@ -98,7 +104,6 @@ async function getInputData (payment, redeemType) {
       mixin2.redeemScript = payment.redeem.output
       break
   }
-  console.log(mixin2.witnessScript.toString('hex'))
   return {
     hash: hash,
     index: index,
