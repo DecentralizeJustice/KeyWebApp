@@ -2,17 +2,16 @@
 const bitcoin = require('bitcoinjs-lib')
 const NETWORKS = require('./networks')
 const wifList = require('./wif')
-const genAddressUnspent = require('./fetch')
+const fetchHelper = require('./fetch')
 const regtest = NETWORKS.regtest
 const testnet = NETWORKS.testnet
 
-let stuff = async function () {
+let stuff = async function (m) {
   const network = testnet
-  const m = 2
-  // const n = 4
+  const n = 4
   const eccArray = getECPairFromWifArray(wifList.wifList, network)
-  const p2sh = createPayment('p2sh-p2wsh-p2ms(2 of 3)', eccArray, network)
-  const transInfo = await genAddressUnspent.genAddressUnspent('2N32ArACYusEbgjZ4ox1jRGCxwygA8rPtgT')
+  const p2sh = createPayment(`p2sh-p2wsh-p2ms(${m} of ${n})`, eccArray, network)
+  const transInfo = await fetchHelper.genAddressUnspent('2N2h4udPeY6ZfmQSEgdrsga9ZHuyT9v8MXf')
   const inputData = await getInputData(p2sh.payment, 'p2sh-p2wsh', transInfo)
   const spendable = transInfo.value_int
   const fees = 10000
@@ -30,7 +29,7 @@ let stuff = async function () {
   psbt.finalizeAllInputs()
   const tx = psbt.extractTransaction()
   const txHex = tx.toHex()
-  const broadcast = await genAddressUnspent.broadcastTrans(txHex)
+  const broadcast = await fetchHelper.broadcastTrans(txHex)
   return broadcast
 }
 
