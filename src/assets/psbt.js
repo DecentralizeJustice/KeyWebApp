@@ -25,12 +25,13 @@ let stuff = async function (m) {
   for (let i = 0; i < m; i++) {
     psbt.signInput(0, p2sh.keys[i])
   }
-  psbt.validateSignaturesOfInput(0)
-  psbt.finalizeAllInputs()
-  const tx = psbt.extractTransaction()
-  const txHex = tx.toHex()
-  const broadcast = await fetchHelper.broadcastTrans(txHex)
-  return broadcast
+  console.log(psbt)
+  // psbt.validateSignaturesOfInput(0)
+  // psbt.finalizeAllInputs()
+  // const tx = psbt.extractTransaction()
+  // const txHex = tx.toHex()
+  // const broadcast = await fetchHelper.broadcastTrans(txHex)
+  // return broadcast
 }
 
 function getECPairFromWifArray (wifArray, network) {
