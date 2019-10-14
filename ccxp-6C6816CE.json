@@ -1,0 +1,9 @@
+{
+  "p2sh_deriv": "m/45'",
+  "p2sh": "tpubD94LpDG9ma54yvb1X4ncTuW3KVvELaEQzeEjn5FxEynykv4CrUk4m8BKM21WE7SaAnWzEYQztqiRu4PEJBGeG3ZPo4mX8s9FTP9GZ3q6y5G",
+  "p2wsh_p2sh_deriv": "m/48'/1'/0'/1'",
+  "p2wsh_p2sh": "Upub5TXu4sXWWpEBmzwSYTD33eSyQnmhd7ffjHdE56XQEiCvEXc4DCFnbzuHMNNgZcp1CvkjLJ4XE4BSUty3V8XHcrMRwmtRg7JzBV5FngY5TAF",
+  "p2wsh_deriv": "m/48'/1'/0'/2'",
+  "p2wsh": "Vpub5nNANYCRfVmfgiGuMVtZQjcjGEfQZobjAYXpyjL1qr6TUpdgmrKRjWUgoFBsB4PNPqzomXsRxePQH23oqi2hYXMtm9zDfEsVQH5WfaQTLad",
+  "xfp": "6C6816CE"
+}

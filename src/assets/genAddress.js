@@ -6,21 +6,21 @@ const testnet = NETWORKS.testnet
 exports.genAddress = function (m) {
   const network = testnet
   const eccArray = getECPairFromWifArray(wifList.wifList, network)
-  let pubkeys = []
+  const pubkeys = []
   for (let i = 0; i < eccArray.length; i++) {
     pubkeys.push(eccArray[i].publicKey)
   }
   pubkeys.sort()
-  const info = bitcoin.payments.p2sh({ network: network,
-    redeem: bitcoin.payments.p2wsh({ network: network,
-      redeem: bitcoin.payments.p2ms({ m: m, pubkeys: pubkeys, network: network })
-    })
+  const info = bitcoin.payments.p2wsh({
+    network: network,
+    redeem: bitcoin.payments.p2ms({ m: m, pubkeys: pubkeys, network: network })
   })
+
   return info.address
 }
 
 function getECPairFromWifArray (wifArray, network) {
-  let eccPairArray = []
+  const eccPairArray = []
   for (let i = 0; i < wifArray.length; i++) {
     eccPairArray.push(bitcoin.ECPair.fromWIF(wifArray[i], network))
   }

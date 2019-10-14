@@ -1,4 +1,4 @@
-
+import { genAddress } from '@/assets/genAddress.js'
 const bitcoin = require('bitcoinjs-lib')
 const NETWORKS = require('./networks')
 const wifList = require('./wif')
@@ -6,17 +6,18 @@ const fetchHelper = require('./fetch')
 const regtest = NETWORKS.regtest
 const testnet = NETWORKS.testnet
 
-let stuff = async function (m) {
+const spend = async function (m) {
   const network = testnet
-  const n = 4
+  const address = await genAddress(m)
   const eccArray = getECPairFromWifArray(wifList.wifList, network)
-  const p2sh = createPayment(`p2sh-p2wsh-p2ms(${m} of ${n})`, eccArray, network)
-  const transInfo = await fetchHelper.genAddressUnspent('2N2h4udPeY6ZfmQSEgdrsga9ZHuyT9v8MXf')
-  const inputData = await getInputData(p2sh.payment, 'p2sh-p2wsh', transInfo)
+  const n = eccArray.length
+  const p2sh = createPayment(`p2wsh-p2ms(${m} of ${n})`, eccArray, network)
+  const transInfo = await fetchHelper.genAddressUnspent(address)
+  const inputData = await getInputData(p2sh.payment, 'p2wsh', transInfo)
   const spendable = transInfo.value_int
   const fees = 10000
   const totalToSend = spendable - fees
-  let psbt = new bitcoin.Psbt({ network: network })
+  const psbt = new bitcoin.Psbt({ network: network })
     .addInput(inputData)
     .addOutput({
       address: 'mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt',
@@ -25,17 +26,16 @@ let stuff = async function (m) {
   for (let i = 0; i < m; i++) {
     psbt.signInput(0, p2sh.keys[i])
   }
-  console.log(psbt)
-  // psbt.validateSignaturesOfInput(0)
-  // psbt.finalizeAllInputs()
-  // const tx = psbt.extractTransaction()
-  // const txHex = tx.toHex()
-  // const broadcast = await fetchHelper.broadcastTrans(txHex)
-  // return broadcast
+  psbt.validateSignaturesOfInput(0)
+  psbt.finalizeAllInputs()
+  const tx = psbt.extractTransaction()
+  const txHex = tx.toHex()
+  const broadcast = await fetchHelper.broadcastTrans(txHex)
+  return broadcast
 }
 
 function getECPairFromWifArray (wifArray, network) {
-  let eccPairArray = []
+  const eccPairArray = []
   for (let i = 0; i < wifArray.length; i++) {
     eccPairArray.push(bitcoin.ECPair.fromWIF(wifArray[i], network))
   }
@@ -95,13 +95,13 @@ function getInputData (payment, redeemType, transInfo) {
   )
   const witnessUtxo = {
     script: script,
-    value: amount }
+    value: amount
+  }
   const mixin = { witnessUtxo }
   const mixin2 = {}
   switch (redeemType) {
-    case 'p2sh-p2wsh':
-      mixin2.witnessScript = payment.redeem.redeem.output
-      mixin2.redeemScript = payment.redeem.output
+    case 'p2wsh':
+      mixin2.witnessScript = payment.redeem.output
       break
   }
   return {
@@ -112,4 +112,4 @@ function getInputData (payment, redeemType, transInfo) {
   }
 }
 
-export { stuff }
+export { spend }

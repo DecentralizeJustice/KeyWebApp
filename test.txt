@@ -1,0 +1,6 @@
+Name: test_wallet
+Policy: 2 of 2
+Format: P2WSH
+
+DFFED015: Vpub5nQxS4k2YAr2CeTKz7Kv5cTDLr8yEnEf4hV2S8xzmaK3ajsAeHAafma9Mtn6in9jykT5KBmDjqvVcjReza2gYpqvv2BHQb2eDgdWtBqqpej
+6C6816CE: Vpub5nNANYCRfVmfgiGuMVtZQjcjGEfQZobjAYXpyjL1qr6TUpdgmrKRjWUgoFBsB4PNPqzomXsRxePQH23oqi2hYXMtm9zDfEsVQH5WfaQTLad
