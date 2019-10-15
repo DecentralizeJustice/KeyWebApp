@@ -6,11 +6,10 @@
           class="mx-auto"
         >
           <v-card-actions class="justify-center">
-            <v-btn v-on:click="getPub">Get Xpub</v-btn>
-            <v-btn v-on:click="getxprv">Get XPriv</v-btn>
-            <v-btn v-on:click="getXFP">Get XFP</v-btn>
             <v-btn v-on:click="getAddress">Get Address</v-btn>
-            <v-btn v-on:click="spend">Spend Money</v-btn>
+            <v-btn v-on:click="getTrans">Get PBST</v-btn>
+            <v-btn>Combine PBST</v-btn>
+            <v-btn>Broadcast PBST</v-btn>
           </v-card-actions>
           <v-btn class="ma-2" color="orange" dark> Extra
         <v-icon dark right>mdi-xbox-controller-menu</v-icon>
@@ -22,34 +21,20 @@
 </template>
 
 <script>
-import { spend } from '@/assets/psbt.js'
-import { genAddress } from '@/assets/genAddress.js'
-import { genpub, genxprv, testXFP } from '@/assets/genUpub.js'
+import { getPBST } from '@/assets/coldCard/genPBST.js'
+import { genAddress } from '@/assets/coldCard/genAddress.js'
 export default {
   data: () => ({
-    neededSigs: 2
   }),
   components: {
   },
   methods: {
-    async getPub () {
-      const test = await genpub()
+    async getTrans () {
+      const test = await getPBST()
       console.log(test)
     },
     async getAddress () {
-      const test = await genAddress(this.neededSigs)
-      console.log(test)
-    },
-    async getxprv () {
-      const test = await genxprv()
-      console.log(test)
-    },
-    async getXFP () {
-      const test = await testXFP()
-      console.log(test)
-    },
-    async spend () {
-      const test = await spend(this.neededSigs)
+      const test = await genAddress(0)
       console.log(test)
     }
   }
