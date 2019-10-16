@@ -1,5 +1,4 @@
 import { getPubkeyArray, genAddress } from '@/assets/coldCard/genAddress.js'
-import { addToPSBT } from '@/assets/coldCard/psbtEdit.js'
 const bitcoin = require('bitcoinjs-lib')
 const NETWORKS = require('./networks')
 const fetchHelper = require('./fetch')
