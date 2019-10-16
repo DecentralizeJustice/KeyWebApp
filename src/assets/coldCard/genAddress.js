@@ -39,7 +39,8 @@ async function getPubkeyArray (index) {
     const pubkey = node.derive(index).publicKey
     pubkeyArray.push(pubkey)
   }
-  return pubkeyArray
+  const sortedArray = sort(pubkeyArray)
+  return sortedArray
 }
 
 function pubToXpub (pub) {
