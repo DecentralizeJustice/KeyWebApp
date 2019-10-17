@@ -8,7 +8,7 @@
           <v-card-actions class="justify-center">
             <v-btn v-on:click="getAddress">Get Address</v-btn>
             <v-btn v-on:click="getTrans">Get PBST</v-btn>
-            <v-btn>Combine PBST</v-btn>
+            <v-btn v-on:click="signTrans">Combine PBST</v-btn>
             <v-btn>Broadcast PBST</v-btn>
           </v-card-actions>
           <v-btn class="ma-2" color="orange" dark> Extra
@@ -23,6 +23,7 @@
 <script>
 import { getPBST } from '@/assets/coldCard/genPBST.js'
 import { genAddress } from '@/assets/coldCard/genAddress.js'
+import { signwithKey } from '@/assets/coldCard/signWithWebKey.js'
 export default {
   data: () => ({
   }),
@@ -35,6 +36,10 @@ export default {
     },
     async getAddress () {
       const test = await genAddress(0)
+      console.log(test)
+    },
+    async signTrans () {
+      const test = await signwithKey()
       console.log(test)
     }
   }

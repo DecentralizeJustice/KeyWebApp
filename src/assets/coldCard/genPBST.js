@@ -67,8 +67,6 @@ async function createPayment (_type, myKeys, network) {
   let payment
   splitType.forEach(type => {
     if (type.slice(0, 4) === 'p2ms') {
-      console.log(keys[0].toString('hex'))
-      console.log(keys[1].toString('hex'))
       payment = bitcoin.payments.p2ms({
         m,
         pubkeys: keys,

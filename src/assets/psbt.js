@@ -24,14 +24,15 @@ const spend = async function (m) {
       value: totalToSend
     })
   for (let i = 0; i < m; i++) {
+    console.log(p2sh.keys[i])
     psbt.signInput(0, p2sh.keys[i])
   }
-  psbt.validateSignaturesOfInput(0)
-  psbt.finalizeAllInputs()
-  const tx = psbt.extractTransaction()
-  const txHex = tx.toHex()
-  const broadcast = await fetchHelper.broadcastTrans(txHex)
-  return broadcast
+  // psbt.validateSignaturesOfInput(0)
+  // psbt.finalizeAllInputs()
+  // const tx = psbt.extractTransaction()
+  // const txHex = tx.toHex()
+  // const broadcast = await fetchHelper.broadcastTrans(txHex)
+  // return broadcast
 }
 
 function getECPairFromWifArray (wifArray, network) {
