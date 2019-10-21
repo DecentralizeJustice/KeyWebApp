@@ -8,8 +8,7 @@
           <v-card-actions class="justify-center">
             <v-btn v-on:click="getAddress">Get Address</v-btn>
             <v-btn v-on:click="getTrans">Get PBST</v-btn>
-            <v-btn v-on:click="signTrans">Combine PBST</v-btn>
-            <v-btn>Broadcast PBST</v-btn>
+            <v-btn v-on:click="signTrans">Sign PBST</v-btn>
           </v-card-actions>
           <v-btn class="ma-2" color="orange" dark> Extra
         <v-icon dark right>mdi-xbox-controller-menu</v-icon>
@@ -26,6 +25,7 @@ import { genAddress } from '@/assets/coldCard/genAddress.js'
 import { signwithKey } from '@/assets/coldCard/signWithWebKey.js'
 export default {
   data: () => ({
+    index: 0
   }),
   components: {
   },
@@ -39,7 +39,7 @@ export default {
       console.log(test)
     },
     async signTrans () {
-      const test = await signwithKey()
+      const test = await signwithKey(this.index)
       console.log(test)
     }
   }
