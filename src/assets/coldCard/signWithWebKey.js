@@ -10,7 +10,7 @@ async function signwithKey (index) {
   const node = await bip32.fromSeed(seed)
   const trans = bitcoin.Psbt.fromHex(unsignedTrans)
   const child = await node.derivePath(divPath + '/' + index.toString())
-  const webSigned = await trans.signInput(0, child)
+  const webSigned = await trans.signAllInputs(child)
   return webSigned.toHex()
 }
 export { signwithKey }
