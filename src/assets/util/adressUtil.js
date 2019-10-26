@@ -7,8 +7,7 @@ const coldCardVpub = 'Vpub5nNANYCRfVmfgiGuMVtZQjcjGEfQZobjAYXpyjL1qr6TUpdgmrKRjW
 const webVpub = 'Vpub5nQxS4k2YAr2CeTKz7Kv5cTDLr8yEnEf4hV2S8xzmaK3ajsAeHAafma9Mtn6in9jykT5KBmDjqvVcjReza2gYpqvv2BHQb2eDgdWtBqqpej'
 const vpubArray = [coldCardVpub, webVpub]
 
-async function genAddress (index) {
-  const m = 2
+async function genAddress (index, m) {
   const network = testnet
   let pubkeys = await getPubkeyArray(index)
   pubkeys = sort(pubkeys)
