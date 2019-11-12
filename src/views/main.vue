@@ -26,7 +26,6 @@ import { signPSBT } from '@/assets/util/psbtUtil.js'
 
 export default {
   data: () => ({
-    index: 0,
     unsignedTransHex: '',
     signedTransHex: ''
   }),
@@ -34,14 +33,13 @@ export default {
   },
   methods: {
     async getTransB () {
-      const blob = await getTrans()
-      this.unsignedTransHex = blob.blob.trans
-      this.index = blob.blob.index
-      console.log(blob)
+      const serverInfo = await getTrans()
+      this.unsignedTransHex = serverInfo.blob.trans
+      console.log(this.unsignedTransHex)
     },
     async updateTransB () {
       console.log(this.signedTransHex)
-      const results = await updateTrans(this.signedTransHex, this.index)
+      const results = await updateTrans(this.signedTransHex)
       console.log(results)
     },
     // async getAddress () {
@@ -50,9 +48,8 @@ export default {
     // },
     async signTrans () {
       const trans = await getTrans()
-      const index = trans.blob.index
       const unsigned = trans.blob.trans
-      const signedTrans = await signPSBT(index, unsigned)
+      const signedTrans = await signPSBT(unsigned)
       this.signedTransHex = signedTrans
       console.log(this.signedTransHex)
     }
